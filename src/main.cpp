@@ -69,8 +69,8 @@ int main() {
 	
 	//cargamos los shader
 	glEnable(GL_DEPTH_TEST);
-	Shader myShader("./src/coordVertex.vertexshader", "./src/coordFragment.fragmentshader");
-	Shader LIGHTShader("./src/LightVertex.vertexshader", "./src/LightFragment.fragmentshader");
+	Shader LightShader("./src/LightVertex.vertexshader", "./src/LightFragment.fragmentshader");
+	Shader ReceiveShader("./src/ReceiveVertex.vertexshader", "./src/ReceiveFragment.fragmentshader");
 
 	Object cubA({ 0.3f,0.3f,0.3f }, { 1.f,0.f,0.0f }, { 0.f,0.3f,0.1f }, Object::cube);
 	Object cubB({ 0.1,0.1,0.1 }, { -1.f,0.f,0.0f }, { 0.f,-0.3f,0.5f }, Object::cube);
@@ -85,12 +85,12 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//establecer el shader
-		myShader.USE();
+		LightShader.USE();
 
-		GLint objectColorLoc = glGetUniformLocation(myShader.Program, "objectColor");
-		GLint lightColorLoc = glGetUniformLocation(myShader.Program, "lightColor");
-		GLint lightPosLoc = glGetUniformLocation(myShader.Program, "lightPos");
-		GLint viewPosLoc = glGetUniformLocation(myShader.Program, "viewPos");
+		GLint objectColorLoc = glGetUniformLocation(LightShader.Program, "objectColor");
+		GLint lightColorLoc = glGetUniformLocation(LightShader.Program, "lightColor");
+		GLint lightPosLoc = glGetUniformLocation(LightShader.Program, "lightPos");
+		GLint viewPosLoc = glGetUniformLocation(LightShader.Program, "viewPos");
 		glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.0f);
 		glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
 		
@@ -112,27 +112,27 @@ int main() {
 		model = cubA.GetModelMatrix();
 		
 
-		GLint modelLoc = glGetUniformLocation(myShader.Program,"model");
+		GLint modelLoc = glGetUniformLocation(LightShader.Program,"model");
 		
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-		GLint viewLoc = glGetUniformLocation(myShader.Program, "view");
+		GLint viewLoc = glGetUniformLocation(LightShader.Program, "view");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
-		GLint projectionLoc = glGetUniformLocation(myShader.Program, "projection");
+		GLint projectionLoc = glGetUniformLocation(LightShader.Program, "projection");
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(proj));
 
 		//pintar el VAO
 		cubA.Draw();
 
-		LIGHTShader.USE();
+		ReceiveShader.USE();
 		
 		model = cubB.GetModelMatrix();
 
-		modelLoc = glGetUniformLocation(LIGHTShader.Program, "model");
+		modelLoc = glGetUniformLocation(ReceiveShader.Program, "model");
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-		viewLoc = glGetUniformLocation(LIGHTShader.Program, "view");
+		viewLoc = glGetUniformLocation(ReceiveShader.Program, "view");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
-		projectionLoc = glGetUniformLocation(LIGHTShader.Program, "projection");
+		projectionLoc = glGetUniformLocation(ReceiveShader.Program, "projection");
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(proj));
 
 		//pintar el VAO
