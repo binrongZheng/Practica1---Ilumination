@@ -75,17 +75,6 @@ int main() {
 	Object cubA({ 0.3f,0.3f,0.3f }, { 1.f,0.f,0.0f }, { 0.f,0.3f,0.1f }, Object::cube);
 	Object cubB({ 0.1,0.1,0.1 }, { -1.f,0.f,0.0f }, { 0.f,-0.3f,0.5f }, Object::cube);
 
-	//declarar vector
-//	cubA.Move({ 0.f,0.3f,0.1f });
-//	cubB.Move({ 0.f,-0.3f,0.5f });
-	
-//	cubA.Rotate({ 1.f,0.f,0.0f });
-//	cubB.Rotate({ -1.f,0.f,0.0f });
-
-//	cubA.Scale({ 0.3,0.3,0.3 });
-//	cubB.Scale({ 0.1,0.1,0.1 });
-	//bucle de dibujado
-
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -112,7 +101,13 @@ int main() {
 		
 		proj = perspective(45.0f, (float)WIDTH / (float)HEIGHT, 0.1f, 100.f);
 		view = glm::translate(view, vec3(0.0f, 0.0f, -3.f));
-		
+
+		cubA.Rotate(radiansX, radiansY);
+
+		cubA.Move(movement);
+
+		model = glm::translate(model, cubA.GetPosition());
+
 		
 		model = cubA.GetModelMatrix();
 		
@@ -130,13 +125,6 @@ int main() {
 
 		LIGHTShader.USE();
 		
-		//if (radiansX != 0&&radiansY!=0) {
-			cubB.Rotate(radiansX, radiansY);
-		//}
-		cubB.Move(movement);
-		
-		model = glm::translate(model, cubB.GetPosition());
-
 		model = cubB.GetModelMatrix();
 
 		modelLoc = glGetUniformLocation(LIGHTShader.Program, "model");
@@ -173,7 +161,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_KP_8)
 		radiansY -= 0.5;
 	if (key == GLFW_KEY_KP_2)
-		radiansY = 0.5;
+		radiansY += 0.5;
 	
 	if (key == GLFW_KEY_LEFT )
 		movement.x -= 0.05;
