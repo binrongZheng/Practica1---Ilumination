@@ -9,6 +9,7 @@ class Object {
 
 public:
 	mat4 Model;
+
 	enum FigureType {
 		cube = 0,
 	};
@@ -18,7 +19,7 @@ public:
 
 	void Draw();
 	void Move(vec3 translation);
-	void Rotate(vec3 rota);
+	void Rotate(GLfloat rotaX,GLfloat rotaY);
 	void Scale(vec3 scal);
 	void Delete();
 	mat4 GetModelMatrix();
@@ -29,5 +30,7 @@ private:
 	vec3 position;
 	vec3 scale;
 	vec3 rotation;
+	GLfloat angleX;
+	GLfloat angleY;
 };
 

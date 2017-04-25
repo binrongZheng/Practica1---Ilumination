@@ -93,23 +93,29 @@ void Object::Draw() {
 }
 
 void Object::Move(vec3 translation) {
-	Model = translate(Model, translation);
+//	Model = translate(Model, translation);
 	position = translation;
 }
 
-void Object::Rotate(vec3 rota) {
+void Object::Rotate(GLfloat rotaX,GLfloat rotaY) {
 
-	Model = rotate(Model, radians(5.f), rota);
-	rotation = rota;
+//	Model = rotate(Model, radians(5.f), rota);
+	angleX = rotaX;
+	angleY = rotaY;
 }
 
 void Object::Scale(vec3 scal) {
 
-	Model = glm::scale(Model,scal);
+//	Model = glm::scale(Model,scal);
 	scale = scal;
 }
 
 mat4 Object::GetModelMatrix() {
+	Model = mat4();
+	Model = translate(Model, position);
+	Model = rotate(Model, radians(angleX), {0,1,0});
+	Model = rotate(Model, radians(angleY), {1,0,0});
+	Model = glm::scale(Model, scale);
 	return Model;
 }
 

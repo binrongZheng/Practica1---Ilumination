@@ -22,7 +22,7 @@ bool WIREFRAME = false;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 vec3 mov, rot, scal;
 vec3 movement;
-vec3 rotation = {0,0,0};
+GLfloat radiansX,radiansY;
 GLfloat mixValor;
 //GLfloat radX = 0;
 //GLfloat radY = 0;
@@ -72,18 +72,18 @@ int main() {
 	Shader myShader("./src/coordVertex.vertexshader", "./src/coordFragment.fragmentshader");
 	Shader LIGHTShader("./src/LightVertex.vertexshader", "./src/LightFragment.fragmentshader");
 
-	Object cubA({ 0.3f,0.3f,0.3f }, { 0.f,0.f,0.f }, { 0.f,3.f,1.f }, Object::cube);
-	Object cubB({ 0.1,0.1,0.1 }, { 0.f,0.f,0.f }, { 0.f,3.f,5.f }, Object::cube);
+	Object cubA({ 0.3f,0.3f,0.3f }, { 1.f,0.f,0.0f }, { 0.f,0.3f,0.1f }, Object::cube);
+	Object cubB({ 0.1,0.1,0.1 }, { -1.f,0.f,0.0f }, { 0.f,-0.3f,0.5f }, Object::cube);
 
 	//declarar vector
-	cubA.Move({ 0.f,0.3f,0.1f });
-	cubB.Move({ 0.f,-0.3f,0.5f });
+//	cubA.Move({ 0.f,0.3f,0.1f });
+//	cubB.Move({ 0.f,-0.3f,0.5f });
 	
-	cubA.Rotate({ 1.f,0.f,0.0f });
-	cubB.Rotate({ -1.f,0.f,0.0f });
+//	cubA.Rotate({ 1.f,0.f,0.0f });
+//	cubB.Rotate({ -1.f,0.f,0.0f });
 
-	cubA.Scale({ 0.3,0.3,0.3 });
-	cubB.Scale({ 0.1,0.1,0.1 });
+//	cubA.Scale({ 0.3,0.3,0.3 });
+//	cubB.Scale({ 0.1,0.1,0.1 });
 	//bucle de dibujado
 
 	while (!glfwWindowShouldClose(window))
@@ -129,13 +129,11 @@ int main() {
 		cubA.Draw();
 
 		LIGHTShader.USE();
-
-		if (rotation != vec3 {0, 0, 0}) {
-			cubB.Rotate(rotation);
-			rotation = { 0,0,0 };
-		}
+		
+		//if (radiansX != 0&&radiansY!=0) {
+			cubB.Rotate(radiansX, radiansY);
+		//}
 		cubB.Move(movement);
-		movement = {0,0,0};
 		
 		model = glm::translate(model, cubB.GetPosition());
 
@@ -169,20 +167,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		WIREFRAME = !WIREFRAME;
 
 	if (key == GLFW_KEY_KP_4)
-		rotation = { 0.f,-1.f,0.f };
+		radiansX -= 0.5;
 	if (key == GLFW_KEY_KP_6)
-		rotation = { 0.f,1.f,0.f };
+		radiansX += 0.5;
 	if (key == GLFW_KEY_KP_8)
-		rotation = { -1.f,0.f,0.f};
+		radiansY -= 0.5;
 	if (key == GLFW_KEY_KP_2)
-		rotation = { 1.f,0.f,0.f };
+		radiansY = 0.5;
 	
 	if (key == GLFW_KEY_LEFT )
-		movement = { -0.05,0,0 };
+		movement.x -= 0.05;
 	if (key == GLFW_KEY_RIGHT)
-		movement = { 0.05,0,0 };
+		movement.x += 0.05;
 	if (key == GLFW_KEY_UP )
-		movement = { 0,0.05,0 };
+		movement.y += 0.05;
 	if (key == GLFW_KEY_DOWN )
-		movement = {0, -0.05, 0};
+		movement.y -= 0.05;
 }
