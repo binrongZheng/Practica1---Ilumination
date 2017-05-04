@@ -17,15 +17,11 @@
 using namespace glm;
 using namespace std;
 const GLint WIDTH = 800, HEIGHT = 800;
-bool WIREFRAME = false;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-vec3 mov, rot, scal;
+
 vec3 movement;
 GLfloat radiansX,radiansY;
-GLfloat mixValor;
-//GLfloat radX = 0;
-//GLfloat radY = 0;
 
 int main() {
 	
@@ -151,9 +147,7 @@ int main() {
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key == GLFW_KEY_W && action == GLFW_PRESS)
-		WIREFRAME = !WIREFRAME;
-
+	
 	if (key == GLFW_KEY_KP_4)
 		radiansX -= 0.5;
 	if (key == GLFW_KEY_KP_6)
